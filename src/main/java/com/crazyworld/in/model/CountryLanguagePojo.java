@@ -13,11 +13,8 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
 public class CountryLanguagePojo {
 	
-
-	 private String countryCode;
 
 	 @NotNull
 	 private String language;
