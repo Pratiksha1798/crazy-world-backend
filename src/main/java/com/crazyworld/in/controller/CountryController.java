@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.crazyworld.in.exception.CountryNotFoundException;
 import com.crazyworld.in.model.CountryGnpPojo;
 import com.crazyworld.in.model.CountryPojo;
+import com.crazyworld.in.model.CountryWithCityCountDto;
 import com.crazyworld.in.service.CountryServiceImpl;
 
 import jakarta.validation.Valid;
@@ -42,7 +43,6 @@ public class CountryController {
 		return countryName;
 		
 	}
-	
 	
 
     @GetMapping("/{countrycode}/population")
@@ -74,14 +74,14 @@ public class CountryController {
     
     }
     @PatchMapping("/updategnp/{name}")
-    public ResponseEntity<CountryPojo> updateGnp(@PathVariable String name,  @RequestBody @Valid CountryPojo updates) {
+    public ResponseEntity<CountryPojo> updateGnp(@PathVariable String name,  @RequestBody @Valid Map<String, Object> updates) {
          CountryPojo updatedCountry = countryServiceImpl.updateGnp(name, updates);
          return new ResponseEntity<>(updatedCountry,HttpStatus.OK);
         
     }
     
     @PatchMapping("/updatepopulation/{name}")
-    public ResponseEntity<?> updatePopulation(@PathVariable String name, @RequestBody @Valid CountryPojo updates) {
+    public ResponseEntity<?> updatePopulation(@PathVariable String name, @RequestBody @Valid Map<String, Object> updates) {
         try {
             CountryPojo updatedCountry = countryServiceImpl.updatePopulation(name, updates);
             return new ResponseEntity<>(updatedCountry, HttpStatus.OK);
@@ -94,6 +94,23 @@ public class CountryController {
         }
     }
     
+    @PatchMapping("/updateheadofstate/{name}")
+    public ResponseEntity<CountryPojo> updateHeadOfState(@PathVariable String name, @RequestBody Map<String, Object> updates) {
+        CountryPojo updatedCountry = countryServiceImpl.updateHeadOfState(name, updates);
+        return new ResponseEntity<>(updatedCountry, HttpStatus.OK);
+    }
     
     
-}
+    
+    @GetMapping("/countriesWithCityCount")
+    public ResponseEntity<List<CountryWithCityCountDto>> getCountriesWithCityCount() {
+        List<CountryWithCityCountDto> countriesWithCityCount = countryServiceImpl.getCountriesWithCityCount();
+        return new ResponseEntity<>(countriesWithCityCount, HttpStatus.OK);
+    }
+
+ }
+
+    
+    
+    
+

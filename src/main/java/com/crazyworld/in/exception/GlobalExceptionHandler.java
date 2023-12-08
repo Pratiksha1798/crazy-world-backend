@@ -29,6 +29,11 @@ public class GlobalExceptionHandler {
 	}
 	
 	
+	@ExceptionHandler({ValidateFieldException.class})
+	public ResponseEntity<Object> validatesException(ValidateFieldException ge){
+		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ge.getMessage());
+	}
+	
 	
 	@ExceptionHandler({LanguageNotFoundException.class})
 	public ResponseEntity<Object> languageNotFoundException(LanguageNotFoundException le){
