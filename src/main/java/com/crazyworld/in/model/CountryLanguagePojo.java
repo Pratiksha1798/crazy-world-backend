@@ -3,12 +3,12 @@ package com.crazyworld.in.model;
 import java.math.BigDecimal;
 
 import com.crazyworld.in.util.IsOfficial;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 @Setter
 @Getter
 @NoArgsConstructor
@@ -26,5 +26,5 @@ public class CountryLanguagePojo {
      private BigDecimal percentage;
      
  
-
+	 private CountryPojo country;
 }
