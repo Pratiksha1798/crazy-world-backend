@@ -37,9 +37,9 @@ public class CountryController {
 	CountryLanguageServiceImpl countryLanguageService;
 	
 	@GetMapping
-	public List<CountryPojo> getAllCountries(){
+	public ResponseEntity<List<CountryPojo>> getAllCountries(){
 		List<CountryPojo> allCountries=countryServiceImpl.getAllCountries();
-		return allCountries;
+		return new ResponseEntity<>(allCountries, HttpStatus.OK);
 	}
 
 
