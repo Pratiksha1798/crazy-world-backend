@@ -71,10 +71,10 @@ public class CountryServiceImpl implements ICountryService{
         	throw new CountryNotFoundException("Country Details Not Found for Country : "+name);
         }
         List<CityPojo> allCitiesPojo=new ArrayList<CityPojo>();
-        for(CityEntity allCities:country) {
+       for(CityEntity allCities:country) {
         	CityPojo city=new CityPojo();
         	
-        	BeanUtils.copyProperties(allCities, city);
+        	BeanUtils.copyProperties(allCities,city);
         	allCitiesPojo.add(city);
         	
         }
@@ -230,7 +230,7 @@ public class CountryServiceImpl implements ICountryService{
         List<CountryWithCityCountDto> result = new ArrayList<>();
 
         for (CountryEntity country : countries) {
-            long cityCount = cityRepository.countByCountryEntity(country);
+          long cityCount = cityRepository.countByCountryEntity(country);
            
             CountryWithCityCountDto dto = new CountryWithCityCountDto( );
             
