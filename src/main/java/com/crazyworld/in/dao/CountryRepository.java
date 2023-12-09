@@ -34,6 +34,17 @@ public interface CountryRepository extends JpaRepository<CountryEntity,String> {
 	 @Query(value = "SELECT * FROM Country ORDER BY gnp DESC LIMIT 10", nativeQuery = true)
 	 List<CountryEntity> findTop10ByGnp();
 	 
+	 @Query("SELECT cl.language FROM CountryEntity c JOIN c.languages cl WHERE c.region = :region")
+	    List<String> findLanguagesByRegion(@Param("region") String region);
+	 
+	 @Query("SELECT DISTINCT c.governmentForm FROM CountryEntity c")
+	 List<String> findDistinctGovernmentForms();
+	 
+	 @Query(value="SELECT * FROM Country  ORDER BY population LIMIT 10", nativeQuery=true)
+	 List<CountryEntity> findTop10PopulatedCountries();
+	 
+	 @Query("SELECT c.name, COUNT(l.language) FROM CountryEntity c JOIN c.languages l GROUP BY c.name")
+	    List<Object[]> findCountriesWithLanguageCount();
 	 
 	
 

@@ -33,5 +33,20 @@ public interface ICountryService {
 	public CountryPojo updatePopulation(String name, Map<String, Object> updates);
 		
 	public List<CountryWithCityCountDto> getCountriesWithCityCount();
+	
+	//
+	public CountryPojo getByCountryName(String name);
+	
+	public CountryPojo getCountryWithHighestLifeExpectancy();
+	
+	public List<CountryLanguagePojo> getLanguagesByRegion(String region);
+	
+	public List<CountryPojo> getDistinctGovernmentForms();
+	
+	public List<CountryPojo> getTop10PopulatedCountries() ;
+	
+	public CountryPojo updateHeadOfState(String name, Map<String, Object> updates) ;
+	
+	public List<Object[]> getCountriesWithLanguageCount();
 
 }

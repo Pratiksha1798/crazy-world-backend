@@ -41,6 +41,13 @@ public class CountryController {
 		List<CountryPojo> allCountries=countryServiceImpl.getAllCountries();
 		return new ResponseEntity<>(allCountries, HttpStatus.OK);
 	}
+	
+	@GetMapping("/{name}")
+	public CountryPojo getByName( @PathVariable String name) {
+		CountryPojo countryName=countryServiceImpl.getByCountryName(name);
+		return countryName;
+		
+	}
 
 
     @GetMapping("/{countrycode}/population")
@@ -83,6 +90,50 @@ public class CountryController {
     public ResponseEntity<List<CountryWithCityCountDto>> getCountriesWithCityCount() {
         List<CountryWithCityCountDto> countriesWithCityCount = countryServiceImpl.getCountriesWithCityCount();
         return new ResponseEntity<>(countriesWithCityCount, HttpStatus.OK);
+    }
+    
+    @GetMapping("/highestlifeexpectancy")
+    public ResponseEntity<CountryPojo> getCountryWithHighestLifeExpectancy() {
+        CountryPojo countryWithHighestLifeExpectancy = countryServiceImpl.getCountryWithHighestLifeExpectancy();
+        if (countryWithHighestLifeExpectancy != null) {
+            return ResponseEntity.ok(countryWithHighestLifeExpectancy);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @GetMapping("/{region}/alllanguages")
+    public ResponseEntity<List<CountryLanguagePojo>> getLanguagesByRegion(@PathVariable("region") String region) {
+        List<CountryLanguagePojo> languages = countryServiceImpl.getLanguagesByRegion(region);
+        return ResponseEntity.ok(languages);
+    }
+    
+    @GetMapping("/uniquegovermentforms")
+    public ResponseEntity<List<CountryPojo>> getDistinctGovernmentForms() {
+    	List<CountryPojo> response = countryServiceImpl.getDistinctGovernmentForms();
+        System.out.println(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @GetMapping("/toptenpopulated")
+    public ResponseEntity<List<CountryPojo>> getTop10PopulatedCountries() {
+    	List<CountryPojo> response = countryServiceImpl.getTop10PopulatedCountries();
+        System.out.println(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    
+    }
+    
+    
+    @PatchMapping("/updateheadofstate/{name}")
+    public ResponseEntity<CountryPojo> updateHeadOfState(@PathVariable String name, @RequestBody Map<String, Object> updates) {
+        CountryPojo updatedCountry = countryServiceImpl.updateHeadOfState(name, updates);
+        return new ResponseEntity<>(updatedCountry, HttpStatus.OK);
+    }
+    
+    @GetMapping("/languages")
+    public ResponseEntity<List<Object[]>> getCountriesWithLanguageCount() {
+        List<Object[]> countriesWithLanguageCount = countryServiceImpl.getCountriesWithLanguageCount();
+        return new ResponseEntity<>(countriesWithLanguageCount, HttpStatus.OK);
     }
 
  }
