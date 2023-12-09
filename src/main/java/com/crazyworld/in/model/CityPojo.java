@@ -18,15 +18,14 @@ public class CityPojo {
     @NotNull
     private String name;
     
-    @NotNull
-    private String countryCode;  // This is a foreign key to the Country entity
+
 
     private String district;
     
     @NotNull
     private int population;
 
-    private CountryPojo country;  // a Many-to-One relationship with Country
+    private CountryPojo country;  
 
     
 }
