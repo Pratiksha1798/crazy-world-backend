@@ -3,7 +3,6 @@ package com.crazyworld.in.dao.entity;
 import java.math.BigDecimal;
 
 import com.crazyworld.in.util.IsOfficial;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,8 +31,8 @@ public class CountryLanguageEntity {
 
     
     @Enumerated(EnumType.STRING)
-    @Column(name="is_official_type")
-    private  IsOfficial isOfficial;
+//  @Column(name="is_official_type")
+    private  IsOfficial isOfficialType;
     
     
     @Column(name="percentage")

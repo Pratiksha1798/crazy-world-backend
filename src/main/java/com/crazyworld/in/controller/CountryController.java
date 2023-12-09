@@ -77,10 +77,11 @@ public class CountryController {
     public ResponseEntity<CountryPojo> updateGnp(@PathVariable String name,  @RequestBody @Valid Map<String, Object> updates) {
          CountryPojo updatedCountry = countryServiceImpl.updateGnp(name, updates);
          return new ResponseEntity<>(updatedCountry,HttpStatus.OK);
-        
+      
     }
     
     @PatchMapping("/updatepopulation/{name}")
+
     public ResponseEntity<?> updatePopulation(@PathVariable String name, @RequestBody @Valid Map<String, Object> updates) {
         try {
             CountryPojo updatedCountry = countryServiceImpl.updatePopulation(name, updates);
@@ -93,6 +94,7 @@ public class CountryController {
             return new ResponseEntity<>("An error occurred while processing the request", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     
     @PatchMapping("/updateheadofstate/{name}")
     public ResponseEntity<CountryPojo> updateHeadOfState(@PathVariable String name, @RequestBody Map<String, Object> updates) {
@@ -110,7 +112,5 @@ public class CountryController {
 
  }
 
-    
-    
     
 

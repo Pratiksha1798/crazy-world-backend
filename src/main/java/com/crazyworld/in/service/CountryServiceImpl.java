@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import java.util.Optional;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
@@ -17,13 +20,18 @@ import com.crazyworld.in.dao.entity.CityEntity;
 import com.crazyworld.in.dao.entity.CountryEntity;
 import com.crazyworld.in.exception.CountryNotFoundException;
 import com.crazyworld.in.exception.GovernmentNotFoundException;
+
 import com.crazyworld.in.exception.ValidateFieldException;
+
 import com.crazyworld.in.model.CityPojo;
 import com.crazyworld.in.model.CountryGnpPojo;
 import com.crazyworld.in.model.CountryPojo;
 import com.crazyworld.in.model.CountryWithCityCountDto;
 
 import jakarta.transaction.Transactional;
+
+import jakarta.transaction.Transactional;
+import jakarta.validation.ValidationException;
 
 @Service
 public class CountryServiceImpl implements ICountryService{
@@ -41,6 +49,8 @@ public class CountryServiceImpl implements ICountryService{
 	        if (allCountries.isEmpty()) {
 	        	throw new CountryNotFoundException("Country details not found");
 	        }
+
+
 	        List<CountryPojo> allCountriesPojo = new ArrayList<>();
 	        for (CountryEntity eachCountry : allCountries) {
 	            CountryPojo eachCountryPojo = new CountryPojo();
@@ -152,6 +162,37 @@ public class CountryServiceImpl implements ICountryService{
 
         return allCountriesPojo;
     }
+
+
+    @Override
+    public List<CountryPojo> getTop10PopulatedCountries() {
+        List<CountryEntity> top10CountriesData = countryRepository.findTop10PopulatedCountries();
+
+        if (top10CountriesData.isEmpty()) {
+        	throw new CountryNotFoundException("Top 10 Populated Countries Details Not Found");
+        }
+            return top10CountriesData.stream()
+                    .map(data -> {
+                        CountryPojo countryPojo = new CountryPojo();
+                        countryPojo.setName(data.getName());
+                        countryPojo.setPopulation(data.getPopulation());
+                        return countryPojo;
+                    })
+                    .collect(Collectors.toList());
+        
+    }
+    
+    @Transactional
+    @Override
+    public CountryPojo updateGnp(String name, CountryPojo updates)  {
+        CountryEntity existingCountry = countryRepository.findByName(name);
+
+        if (existingCountry != null) {
+            if (updates.getGnp()!=null) {
+                //BigDecimal newGnp = new BigDecimal(updates.get("gnp").toString());
+                existingCountry.setGnp(updates.getGnp());
+            }
+=======
 
     @Override
     public List<CountryPojo> getTop10PopulatedCountries() {
@@ -265,6 +306,7 @@ public class CountryServiceImpl implements ICountryService{
                 existingCountry.setHeadOfState(newHeadOfState);
             }
 
+
             CountryEntity updatedCountryEntity = countryRepository.save(existingCountry);
             CountryPojo updatedCountryPojo = new CountryPojo();
             BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
@@ -276,6 +318,48 @@ public class CountryServiceImpl implements ICountryService{
     }
     
     
+
+    public CountryPojo updatePopulation(String name, CountryPojo updates) {
+    	CountryEntity countryEntity = countryRepository.findByName(name);
+
+       if(countryEntity!=null) {
+    	   if (updates.getPopulation() != null) {
+               if (updates.getPopulation() < 0) {
+                   throw new ValidationException("Population must be a non-negative value service");
+               }
+               System.out.println(updates.getPopulation());
+               countryEntity.setPopulation(updates.getPopulation());
+           }
+
+           CountryEntity updatedCountryEntity = countryRepository.save(countryEntity);
+
+           CountryPojo updatedCountryPojo = new CountryPojo();
+           BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
+           return updatedCountryPojo;
+       }
+       else {
+    	   throw new CountryNotFoundException("Country not found with name " + name +" to Update the population");
+       }
+       
+    }
+    
+    
+//    add this also
+    @Override
+	public CountryPojo getCountryByCode(String code) {
+		Optional<CountryEntity>  countryEntityOpt = countryRepository.findById(code);
+		System.out.println(countryEntityOpt.toString());
+		if(countryEntityOpt.isPresent()) {
+			CountryEntity countryEntity =  countryEntityOpt.get();
+			CountryPojo countryPojo=new CountryPojo();
+			BeanUtils.copyProperties(countryEntity,countryPojo);
+			System.out.println(countryPojo.toString());
+			 return countryPojo;
+		}
+		return null;
+	}
+}
+
     @Override
     public List<CountryWithCityCountDto> getCountriesWithCityCount() {
         List<CountryEntity> countries = countryRepository.findAll();
@@ -294,9 +378,6 @@ public class CountryServiceImpl implements ICountryService{
         return result;
     }
 }
-
-
-
 
 	
 

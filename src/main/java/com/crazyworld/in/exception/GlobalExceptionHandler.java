@@ -22,21 +22,23 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(cf.getMessage());
 	}
 	
-	
 	@ExceptionHandler({GovernmentNotFoundException.class})
 	public ResponseEntity<Object> governmentNotFoundException(GovernmentNotFoundException ge){
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ge.getMessage());
 	}
 	
-	
 	@ExceptionHandler({ValidateFieldException.class})
 	public ResponseEntity<Object> validatesException(ValidateFieldException ge){
 		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ge.getMessage());
 	}
-	
-	
+		
 	@ExceptionHandler({LanguageNotFoundException.class})
 	public ResponseEntity<Object> languageNotFoundException(LanguageNotFoundException le){
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(le.getMessage());
+	}
+	
+	@ExceptionHandler({DataNotFoundException.class})
+	public ResponseEntity<Object> DataNotFoundException(DataNotFoundException le){
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(le.getMessage());
 	}
 	
@@ -50,7 +52,4 @@ public class GlobalExceptionHandler {
 		response.put("errors", errors);
 		return new ResponseEntity<>(response,new HttpHeaders(),HttpStatus.BAD_REQUEST);
 	}
-	
-	
-	
 }
