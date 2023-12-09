@@ -2,6 +2,7 @@ package com.crazyworld.in.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -240,6 +241,130 @@ public class CountryServiceImpl implements ICountryService{
 
         return result;
     }
+    
+    //Pratiksha
+
+	@Override
+	public CountryPojo getByCountryName(String name) {
+		CountryEntity countryEntity = countryRepository.findByName(name);
+		 CountryPojo countryPojo=new CountryPojo();
+		 if(countryEntity!=null) {
+			 BeanUtils.copyProperties(countryEntity,countryPojo);
+			 return countryPojo;
+		 }
+		 else {
+			 throw new CountryNotFoundException("Country Details Not Found for Country : "+name);
+		 }
+	}
+
+	@Override
+	public CountryPojo getCountryWithHighestLifeExpectancy() {
+		List<CountryEntity> allCountries = countryRepository.findAll();
+		if (allCountries.isEmpty()) {
+	        throw new CountryNotFoundException("No countries found in the database.");
+	    }
+
+	    CountryEntity countryWithHighestLifeExpectancy = allCountries.stream()
+	            .max(Comparator.comparing(CountryEntity::getLifeExpectancy))
+	            .orElse(null);
+
+	    if (countryWithHighestLifeExpectancy == null) {
+	        throw new CountryNotFoundException("No country found with the highest life expectancy.");
+	    }
+
+	    CountryPojo countryPojo = new CountryPojo();
+	    BeanUtils.copyProperties(countryWithHighestLifeExpectancy, countryPojo);
+	    return countryPojo;
+	}
+
+	@Override
+	public List<CountryLanguagePojo> getLanguagesByRegion(String region) {
+		List<String> languages = countryRepository.findLanguagesByRegion(region);
+
+	    if (languages == null || languages.isEmpty()) {
+	        throw new LanguageNotFoundException("No languages found for the specified region: " + region);
+	    }
+
+	    return languages.stream()
+	            .map(language -> {
+	                CountryLanguagePojo dto = new CountryLanguagePojo();
+	                dto.setLanguage(language);
+	                return dto;
+	            })
+	            .collect(Collectors.toList());
+	
+	}
+
+	@Override
+	public List<CountryPojo> getDistinctGovernmentForms() {
+		List<String> distinctGovernmentForms = countryRepository.findDistinctGovernmentForms();
+        List<CountryPojo> allCountriesPojo = new ArrayList<>();
+        if(distinctGovernmentForms.isEmpty()) {
+        	throw new GovernmentNotFoundException("Unique Government details not Found");
+        }
+        for (String governmentForm : distinctGovernmentForms) {
+            CountryPojo countryPojo = new CountryPojo();
+            countryPojo.setGovernmentForm(governmentForm);
+            allCountriesPojo.add(countryPojo);
+        }
+
+        return allCountriesPojo;
+	}
+
+	@Override
+	public List<CountryPojo> getTop10PopulatedCountries() {
+		 List<CountryEntity> top10CountriesData = countryRepository.findTop10PopulatedCountries();
+
+	        if (top10CountriesData.isEmpty()) {
+	        	throw new CountryNotFoundException("Top 10 Populated Countries Details Not Found");
+	        }
+	            return top10CountriesData.stream()
+	                    .map(data -> {
+	                        CountryPojo countryPojo = new CountryPojo();
+	                        countryPojo.setName(data.getName());
+	                        countryPojo.setPopulation(data.getPopulation());
+	                        return countryPojo;
+	                    })
+	                    .collect(Collectors.toList());
+	}
+
+	@Override
+	public CountryPojo updateHeadOfState(String name, Map<String, Object> updates) {
+		CountryEntity existingCountry = countryRepository.findByName(name);
+
+        if (existingCountry != null) {
+            if (updates.containsKey("headOfState")) {
+                Object headOfStateObject = updates.get("headOfState");
+                if (headOfStateObject == null) {
+                    throw new ValidateFieldException("headofstate must not be null");
+                }
+
+                if (!(headOfStateObject instanceof String)) {
+                    throw new ValidateFieldException("headofstate must be a string");
+                }
+
+                String newHeadOfState = (String) headOfStateObject;
+                if (newHeadOfState.isEmpty()) {
+                    throw new ValidateFieldException("headofstate must not be empty");
+                }
+
+                existingCountry.setHeadOfState(newHeadOfState);
+            }
+
+            CountryEntity updatedCountryEntity = countryRepository.save(existingCountry);
+            CountryPojo updatedCountryPojo = new CountryPojo();
+            BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
+
+            return updatedCountryPojo;
+        } else {
+            throw new CountryNotFoundException("Country not found with name: " + name);
+        }
+	}
+
+	@Override
+	public List<Object[]> getCountriesWithLanguageCount() {
+		return countryRepository.findCountriesWithLanguageCount();
+	}
 
 
 }
