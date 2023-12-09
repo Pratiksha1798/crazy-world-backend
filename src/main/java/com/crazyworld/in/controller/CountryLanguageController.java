@@ -34,21 +34,10 @@ import jakarta.validation.Valid;
 public class CountryLanguageController {
 
 
-
-@RestController
-@RequestMapping("/api/countries")
-public class CountryLanguageController {
-	
-
 	@Autowired
 	private CountryLanguageServiceImpl countryLanguageService;
 
-	@GetMapping("/{region}/alllanguages")
-
-	public ResponseEntity<List<CountryLanguagePojo>> getAllLanguagesByRegion(@PathVariable String region) {
-		List<CountryLanguagePojo> listOfLanguages = countryLanguageService.getAllLanguagesByRegion(region);
-		return new ResponseEntity<>(listOfLanguages, HttpStatus.OK);
-	}
+	
 
 	@GetMapping
 	public ResponseEntity<List<CountryLanguagePojo>> getAllUniqueLanguages() {
@@ -80,19 +69,19 @@ public class CountryLanguageController {
 		return new ResponseEntity<>(listOfLanguage, HttpStatus.OK);
 	}
 
-	@GetMapping("maxspokenlang")
+	@GetMapping("/maxspokenlang")
 	public ResponseEntity<List<CountryLanguagePojo>> getMaxspokenLanguages() {
 		List<CountryLanguagePojo> listOfLanguages = countryLanguageService.getMaxSpokenLanguage();
 		return new ResponseEntity<>(listOfLanguages, HttpStatus.OK);
 	}
 
-	@GetMapping("maxspokenlang/{countrycode}")
+	@GetMapping("/maxspokenlang/{countrycode}")
 	public ResponseEntity<CountryLanguagePojo> getMaxspokenLanguage(@PathVariable("countrycode") String countrycode) {
 		CountryLanguagePojo countryLanguagePojo = countryLanguageService.getMaxSpokenLanguageByCode(countrycode);
 		return new ResponseEntity<>(countryLanguagePojo, HttpStatus.OK);
 	}
 
-	@PatchMapping("updatepercentage/{countrycode}/{language}/{percentage}")
+	@PatchMapping("/updatepercentage/{countrycode}/{language}/{percentage}")
 	public ResponseEntity<String> getUpdatePercentage(@Valid @PathVariable("countrycode") String countrycode,
 			@PathVariable("language") String language, @PathVariable("percentage") BigDecimal percentage) {
 		countryLanguageService.updatePercentage(countrycode, language, percentage);
@@ -106,10 +95,5 @@ public class CountryLanguageController {
 		return new ResponseEntity<>("Updated isOffical", HttpStatus.OK);
 	}
 
-
-    public ResponseEntity<List<CountryLanguagePojo>> getAllLanguagesByRegion(@PathVariable String region) {
-		List<CountryLanguagePojo> listOfLanguages=countryLanguageService.getAllLanguagesByRegion(region);
-        return new ResponseEntity<> (listOfLanguages,HttpStatus.OK);
-    }
 
 }

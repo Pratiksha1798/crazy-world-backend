@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.crazyworld.in.exception.CountryNotFoundException;
 import com.crazyworld.in.model.CountryGnpPojo;
+import com.crazyworld.in.model.CountryLanguagePojo;
 import com.crazyworld.in.model.CountryPojo;
 import com.crazyworld.in.model.CountryWithCityCountDto;
+import com.crazyworld.in.service.CountryLanguageServiceImpl;
 import com.crazyworld.in.service.CountryServiceImpl;
 
 import jakarta.validation.Valid;
@@ -31,19 +33,15 @@ public class CountryController {
 	@Autowired
 	CountryServiceImpl countryServiceImpl;
 	
+	@Autowired
+	CountryLanguageServiceImpl countryLanguageService;
+	
 	@GetMapping
 	public List<CountryPojo> getAllCountries(){
 		List<CountryPojo> allCountries=countryServiceImpl.getAllCountries();
 		return allCountries;
 	}
-	
-	@GetMapping("/{name}")
-	public CountryPojo getByName( @PathVariable String name) {
-		CountryPojo countryName=countryServiceImpl.getByCountryName(name);
-		return countryName;
-		
-	}
-	
+
 
     @GetMapping("/{countrycode}/population")
     public ResponseEntity<String> getPopulationAndLifeExpectancy(@PathVariable String countrycode) {
@@ -58,21 +56,7 @@ public class CountryController {
         return new ResponseEntity<>(top10Countries, HttpStatus.OK);
     }
     
-    @GetMapping("/uniquegovermentforms")
-    public ResponseEntity<List<CountryPojo>> getDistinctGovernmentForms() {
-    	List<CountryPojo> response = countryServiceImpl.getDistinctGovernmentForms();
-        System.out.println(response);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
     
-    
-    @GetMapping("/toptenpopulated")
-    public ResponseEntity<List<CountryPojo>> getTop10PopulatedCountries() {
-    	List<CountryPojo> response = countryServiceImpl.getTop10PopulatedCountries();
-        System.out.println(response);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    
-    }
     @PatchMapping("/updategnp/{name}")
     public ResponseEntity<CountryPojo> updateGnp(@PathVariable String name,  @RequestBody @Valid Map<String, Object> updates) {
          CountryPojo updatedCountry = countryServiceImpl.updateGnp(name, updates);
@@ -81,7 +65,6 @@ public class CountryController {
     }
     
     @PatchMapping("/updatepopulation/{name}")
-
     public ResponseEntity<?> updatePopulation(@PathVariable String name, @RequestBody @Valid Map<String, Object> updates) {
         try {
             CountryPojo updatedCountry = countryServiceImpl.updatePopulation(name, updates);
@@ -95,14 +78,6 @@ public class CountryController {
         }
     }
 
-    
-    @PatchMapping("/updateheadofstate/{name}")
-    public ResponseEntity<CountryPojo> updateHeadOfState(@PathVariable String name, @RequestBody Map<String, Object> updates) {
-        CountryPojo updatedCountry = countryServiceImpl.updateHeadOfState(name, updates);
-        return new ResponseEntity<>(updatedCountry, HttpStatus.OK);
-    }
-    
-    
     
     @GetMapping("/countriesWithCityCount")
     public ResponseEntity<List<CountryWithCityCountDto>> getCountriesWithCityCount() {

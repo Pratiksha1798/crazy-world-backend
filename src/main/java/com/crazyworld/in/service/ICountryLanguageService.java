@@ -8,8 +8,7 @@ import com.crazyworld.in.util.IsOfficial;
 import com.crazyworld.in.util.MaxSpokenInEachCountryResoponse;
 
 public interface ICountryLanguageService {
-	List<CountryLanguagePojo> getAllLanguagesByRegion(String region);
-	
+		
 	List<CountryLanguagePojo> getAllCountryLanguages();
 
     List<CountryLanguagePojo> getCountryLanguagesByCode(String code);
@@ -20,21 +19,12 @@ public interface ICountryLanguageService {
 
     List<CountryLanguagePojo> getMaxSpokenLanguage();
 
-    CountryLanguagePojo getMaxSpokenLanguageByCode(String code);
+    public CountryLanguagePojo getMaxSpokenLanguageByCode(String code);
 
     void updatePercentage(String code, String lang, BigDecimal percentage);
 
     public void setOfficialStatus(String code, String lang);
 
-
-
-import java.util.List;
-
-import com.crazyworld.in.model.CountryLanguagePojo;
-
-public interface ICountryLanguageService {
-	
-	  List<CountryLanguagePojo> getAllLanguagesByRegion(String region);
-
-
 }
+
+

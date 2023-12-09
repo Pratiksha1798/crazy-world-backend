@@ -35,12 +35,7 @@ public interface CountryRepository extends JpaRepository<CountryEntity,String> {
 	 List<CountryEntity> findTop10ByGnp();
 	 
 	 
-	 @Query("SELECT DISTINCT c.governmentForm FROM CountryEntity c")
-	 List<String> findDistinctGovernmentForms();
-	 
-	 
-	 @Query(value="SELECT * FROM Country  ORDER BY population LIMIT 10", nativeQuery=true)
-	 List<CountryEntity> findTop10PopulatedCountries();
+	
 
 
 }		
