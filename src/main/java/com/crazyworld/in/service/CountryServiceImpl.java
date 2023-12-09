@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import java.util.Optional;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
@@ -18,9 +20,15 @@ import com.crazyworld.in.dao.entity.CityEntity;
 import com.crazyworld.in.dao.entity.CountryEntity;
 import com.crazyworld.in.exception.CountryNotFoundException;
 import com.crazyworld.in.exception.GovernmentNotFoundException;
+
+import com.crazyworld.in.exception.ValidateFieldException;
+
 import com.crazyworld.in.model.CityPojo;
 import com.crazyworld.in.model.CountryGnpPojo;
 import com.crazyworld.in.model.CountryPojo;
+import com.crazyworld.in.model.CountryWithCityCountDto;
+
+import jakarta.transaction.Transactional;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
@@ -41,7 +49,8 @@ public class CountryServiceImpl implements ICountryService{
 	        if (allCountries.isEmpty()) {
 	        	throw new CountryNotFoundException("Country details not found");
 	        }
-	        //copying the data from entity to pojo
+
+
 	        List<CountryPojo> allCountriesPojo = new ArrayList<>();
 	        for (CountryEntity eachCountry : allCountries) {
 	            CountryPojo eachCountryPojo = new CountryPojo();
@@ -154,6 +163,7 @@ public class CountryServiceImpl implements ICountryService{
         return allCountriesPojo;
     }
 
+
     @Override
     public List<CountryPojo> getTop10PopulatedCountries() {
         List<CountryEntity> top10CountriesData = countryRepository.findTop10PopulatedCountries();
@@ -182,6 +192,121 @@ public class CountryServiceImpl implements ICountryService{
                 //BigDecimal newGnp = new BigDecimal(updates.get("gnp").toString());
                 existingCountry.setGnp(updates.getGnp());
             }
+=======
+
+    @Override
+    public List<CountryPojo> getTop10PopulatedCountries() {
+        List<CountryEntity> top10CountriesData = countryRepository.findTop10PopulatedCountries();
+
+        if (top10CountriesData.isEmpty()) {
+        	throw new CountryNotFoundException("Top 10 Populated Countries Details Not Found");
+        }
+            return top10CountriesData.stream()
+                    .map(data -> {
+                        CountryPojo countryPojo = new CountryPojo();
+                        countryPojo.setName(data.getName());
+                        countryPojo.setPopulation(data.getPopulation());
+                        return countryPojo;
+                    })
+                    .collect(Collectors.toList());
+        
+    }
+    
+    @Transactional
+    @Override
+    public CountryPojo updateGnp(String name, Map<String, Object> updates) {
+        CountryEntity existingCountry = countryRepository.findByName(name);
+
+        if (existingCountry != null) {
+            if (updates.containsKey("gnp")) {
+                Object gnpObject = updates.get("gnp");
+                if (gnpObject == null) {
+                    throw new ValidateFieldException("GNP must not be null");
+                }
+                System.out.println(gnpObject.toString());
+                System.out.println();
+                if (!(gnpObject instanceof BigDecimal)) {
+                    throw new ValidateFieldException("GNP must be a BigDecimal");
+                }
+
+                BigDecimal newGnp = (BigDecimal) gnpObject;
+                if (newGnp.compareTo(BigDecimal.ZERO) < 0) {
+                    throw new ValidateFieldException("GNP must be a non-negative value");
+                }
+
+                existingCountry.setGnp(newGnp);
+            }
+
+            CountryEntity updatedCountryEntity = countryRepository.save(existingCountry);
+            CountryPojo updatedCountryPojo = new CountryPojo();
+            BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
+
+            return updatedCountryPojo;
+        } else {
+            throw new CountryNotFoundException("Country not found with name: " + name);
+        }
+    }
+
+    
+    
+    public CountryPojo updatePopulation(String name, Map<String, Object> updates) {
+        CountryEntity countryEntity = countryRepository.findByName(name);
+
+        if (countryEntity != null) {
+            if (updates.containsKey("population")) {
+                Object populationObject = updates.get("population");
+                if (populationObject == null) {
+                    throw new ValidateFieldException("Population must not be null");
+                }
+
+                if (!(populationObject instanceof Integer)) {
+                    throw new ValidateFieldException("Population must be an integer");
+                }
+
+                Integer newPopulation = (Integer) populationObject;
+                if (newPopulation < 0) {
+                    throw new ValidateFieldException("Population must be a non-negative value");
+                }
+
+                countryEntity.setPopulation(newPopulation);
+            }
+
+            CountryEntity updatedCountryEntity = countryRepository.save(countryEntity);
+
+            CountryPojo updatedCountryPojo = new CountryPojo();
+            BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
+            return updatedCountryPojo;
+        } else {
+            throw new CountryNotFoundException("Country not found with name " + name + " to update the population");
+        }
+    }
+
+
+    @Transactional
+    @Override
+    public CountryPojo updateHeadOfState(String name, Map<String, Object> updates) {
+        CountryEntity existingCountry = countryRepository.findByName(name);
+
+        if (existingCountry != null) {
+            if (updates.containsKey("headOfState")) {
+                Object headOfStateObject = updates.get("headOfState");
+                if (headOfStateObject == null) {
+                    throw new ValidateFieldException("headofstate must not be null");
+                }
+
+                if (!(headOfStateObject instanceof String)) {
+                    throw new ValidateFieldException("headofstate must be a string");
+                }
+
+                String newHeadOfState = (String) headOfStateObject;
+                if (newHeadOfState.isEmpty()) {
+                    throw new ValidateFieldException("headofstate must not be empty");
+                }
+
+                existingCountry.setHeadOfState(newHeadOfState);
+            }
+
+
             CountryEntity updatedCountryEntity = countryRepository.save(existingCountry);
             CountryPojo updatedCountryPojo = new CountryPojo();
             BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
@@ -193,6 +318,7 @@ public class CountryServiceImpl implements ICountryService{
     }
     
     
+
     public CountryPojo updatePopulation(String name, CountryPojo updates) {
     	CountryEntity countryEntity = countryRepository.findByName(name);
 
@@ -232,6 +358,25 @@ public class CountryServiceImpl implements ICountryService{
 		}
 		return null;
 	}
+}
+
+    @Override
+    public List<CountryWithCityCountDto> getCountriesWithCityCount() {
+        List<CountryEntity> countries = countryRepository.findAll();
+        List<CountryWithCityCountDto> result = new ArrayList<>();
+
+        for (CountryEntity country : countries) {
+            long cityCount = cityRepository.countByCountryEntity(country);
+           
+            CountryWithCityCountDto dto = new CountryWithCityCountDto( );
+            
+            dto.setCountryName(country.getName());
+            dto.setCityCount(cityCount);
+            result.add(dto);
+        }
+
+        return result;
+    }
 }
 
 	

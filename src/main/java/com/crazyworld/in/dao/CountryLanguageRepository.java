@@ -1,6 +1,9 @@
 package com.crazyworld.in.dao;
 
+
 import java.math.BigDecimal;
+
+
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +20,7 @@ import jakarta.transaction.Transactional;
 public interface CountryLanguageRepository extends JpaRepository<CountryLanguageEntity,String>{
 
 	List<CountryLanguageEntity> findByCountryEntityRegion(String region);
+
 
 	List<CountryLanguageEntity> findByCountryEntity(CountryEntity countryEntity);
 	
@@ -52,5 +56,6 @@ public interface CountryLanguageRepository extends JpaRepository<CountryLanguage
 
 	@Query("select count(cle) > 0 from CountryLanguageEntity cle where cle.language = :language")
 	boolean existsByLanguage(@Param("language") String language);
+
 }
 

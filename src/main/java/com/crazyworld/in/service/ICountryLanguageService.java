@@ -28,4 +28,13 @@ public interface ICountryLanguageService {
 
 
 
+import java.util.List;
+
+import com.crazyworld.in.model.CountryLanguagePojo;
+
+public interface ICountryLanguageService {
+	
+	  List<CountryLanguagePojo> getAllLanguagesByRegion(String region);
+
+
 }
