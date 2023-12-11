@@ -39,10 +39,7 @@ public class CountryPojo{
 
 	    private short indepYear; 
 	    
-	    
-
 	    @NotNull
-
 	    @Digits(integer = 10, fraction = 0, message = "Population must be a positive integer")
 	    private Integer population;
 
@@ -50,10 +47,7 @@ public class CountryPojo{
 
 
 	    @DecimalMin(value = "0.0", message = "GNP must be a non-negative value")
-
-	    
 	    @PositiveOrZero(message = "GNP must be a non-negative value")
-
 	    private BigDecimal gnp;
 
 	    private BigDecimal gnpOld;

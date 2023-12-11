@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.crazyworld.in.exception.CountryNotFoundException;
 import com.crazyworld.in.model.CountryGnpPojo;
+import com.crazyworld.in.model.CountryLanguagePojo;
 import com.crazyworld.in.model.CountryPojo;
 import com.crazyworld.in.model.CountryWithCityCountDto;
 import com.crazyworld.in.service.CountryLanguageServiceImpl;
@@ -45,7 +46,6 @@ public class CountryController {
 		
 	}
 
-
     @GetMapping("/{countrycode}/population")
     public ResponseEntity<String> getPopulationAndLifeExpectancy(@PathVariable String countrycode) {
         String response = countryServiceImpl.getPopulationAndLifeExpectancy(countrycode);
@@ -58,7 +58,6 @@ public class CountryController {
         List<CountryGnpPojo> top10Countries = countryServiceImpl.getTop10CountriesByGnp();
         return new ResponseEntity<>(top10Countries, HttpStatus.OK);
     }
-    
     
     @PatchMapping("/updategnp/{name}")
     public ResponseEntity<CountryPojo> updateGnp(@PathVariable String name,  @RequestBody @Valid Map<String, Object> updates) {

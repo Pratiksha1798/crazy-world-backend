@@ -35,15 +35,11 @@ public class CityController {
         }
         
         @GetMapping("/maxpopulated")
-        public ResponseEntity<List<CityPojo>> getCityWithMaxPopulation() {
-            List<CityPojo> cityWithMaxPopulation = cityService.getCityWithMaxPopulation();
-            
-            if (!cityWithMaxPopulation.isEmpty()) {
+        public ResponseEntity<CityPojo> getCityWithMaxPopulation() {
+            CityPojo cityWithMaxPopulation = cityService.getCityWithMaxPopulation();
                 return ResponseEntity.ok(cityWithMaxPopulation);
-            } else {
-                return ResponseEntity.noContent().build();
-            }
-        }
+            } 
+        
         
         
         
@@ -60,7 +56,7 @@ public class CityController {
         }
         
     @GetMapping("/districts/{countrycode}")
-public ResponseEntity<List<CityPojo>> getAllCitiesAndDistrictsForCountry(@PathVariable String countrycode) {
+    public ResponseEntity<List<CityPojo>> getAllCitiesAndDistrictsForCountry(@PathVariable String countrycode) {
     List<CityPojo> citiesAndDistricts = cityService.getAllCitiesAndDistrictsForCountry(countrycode);
     
     if (!citiesAndDistricts.isEmpty()) {
