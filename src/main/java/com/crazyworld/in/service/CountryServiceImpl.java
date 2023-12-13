@@ -132,41 +132,42 @@ public class CountryServiceImpl implements ICountryService{
     }
 
 
-    
-    @Transactional
-    @Override
-    public CountryPojo updateGnp(String name, Map<String, Object> updates) {
-        CountryEntity existingCountry = countryRepository.findByName(name);
-
-        if (existingCountry != null) {
-            if (updates.containsKey("gnp")) {
-                Object gnpObject = updates.get("gnp");
-                if (gnpObject == null) {
-                    throw new ValidateFieldException("GNP must not be null");
-                }
-                System.out.println(gnpObject.toString());
-                System.out.println();
-                if (!(gnpObject instanceof BigDecimal)) {
-                    throw new ValidateFieldException("GNP must be a BigDecimal");
-                }
-
-                BigDecimal newGnp = (BigDecimal) gnpObject;
-                if (newGnp.compareTo(BigDecimal.ZERO) < 0) {
-                    throw new ValidateFieldException("GNP must be a non-negative value");
-                }
-
-                existingCountry.setGnp(newGnp);
-            }
-
-            CountryEntity updatedCountryEntity = countryRepository.save(existingCountry);
-            CountryPojo updatedCountryPojo = new CountryPojo();
-            BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
-
-            return updatedCountryPojo;
-        } else {
-            throw new CountryNotFoundException("Country not found with name: " + name);
-        }
-    }
+	    
+	
+	@Transactional
+	@Override
+	public CountryPojo updateGnp(String name, Map<String, Object> updates) {
+	    CountryEntity existingCountry = countryRepository.findByName(name);
+	
+	    if (existingCountry != null) {
+	        if (updates.containsKey("gnp")) {
+	            Object gnpObject = updates.get("gnp");
+	            
+	            if (gnpObject == null) {
+	                throw new ValidateFieldException("GNP must not be null");
+	            }
+	
+	            if (!(gnpObject instanceof Double)) {
+	                throw new ValidateFieldException("GNP must be a double");
+	            }
+	
+	            Double newGnp = (Double) gnpObject;
+	            if (newGnp < 0) {
+	                throw new ValidateFieldException("GNP must be a non-negative value");
+	            }
+	
+	            existingCountry.setGnp(newGnp);
+	        }
+	
+	        CountryEntity updatedCountryEntity = countryRepository.save(existingCountry);
+	        CountryPojo updatedCountryPojo = new CountryPojo();
+	        BeanUtils.copyProperties(updatedCountryEntity, updatedCountryPojo);
+	
+	        return updatedCountryPojo;
+	    } else {
+	        throw new CountryNotFoundException("Country not found with name: " + name);
+	    }
+	}
 
     
     @Override

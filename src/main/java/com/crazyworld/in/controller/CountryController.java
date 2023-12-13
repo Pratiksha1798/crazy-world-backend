@@ -2,16 +2,19 @@ package com.crazyworld.in.controller;
 
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.crazyworld.in.exception.CountryNotFoundException;
 import com.crazyworld.in.model.CountryGnpPojo;
 import com.crazyworld.in.model.CountryLanguagePojo;
@@ -19,12 +22,14 @@ import com.crazyworld.in.model.CountryPojo;
 import com.crazyworld.in.model.CountryWithCityCountDto;
 import com.crazyworld.in.service.CountryLanguageServiceImpl;
 import com.crazyworld.in.service.CountryServiceImpl;
+
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/api/countries")
 @Validated
+@CrossOrigin("http://localhost:4200")
 public class CountryController {
 	
 	@Autowired
@@ -33,7 +38,7 @@ public class CountryController {
 	@Autowired
 	CountryLanguageServiceImpl countryLanguageService;
 	
-	@GetMapping
+	@GetMapping("/getAllCountries")
 	public ResponseEntity<List<CountryPojo>> getAllCountries(){
 		List<CountryPojo> allCountries=countryServiceImpl.getAllCountries();
 		return new ResponseEntity<>(allCountries, HttpStatus.OK);
