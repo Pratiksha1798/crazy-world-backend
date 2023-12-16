@@ -56,7 +56,7 @@ public class CountryEntity {
     private BigDecimal lifeExpectancy;
 
     @Column(name="gnp")
-    private BigDecimal gnp;
+    private double gnp;
     
     @Column(name="gnp_old")
     private BigDecimal gnpOld;
@@ -75,6 +75,18 @@ public class CountryEntity {
 
     @Column(name="code2")
     private String code2;
+    
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "history", columnDefinition = "TEXT")
+    private String history;
+
+    @Column(name = "geography", columnDefinition = "TEXT")
+    private String geography;
+
+    @Column(name = "traditions", columnDefinition = "TEXT")
+    private String traditions;
     
     @OneToMany(mappedBy = "countryEntity", cascade = CascadeType.ALL)
     private List<CountryLanguageEntity> languages;

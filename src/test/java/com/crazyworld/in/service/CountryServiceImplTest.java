@@ -93,7 +93,7 @@ class CountryServiceImplTest {
 	        countryEntity.setIndepYear((short) 1776);
 	        countryEntity.setPopulation(331000000);
 	        countryEntity.setLifeExpectancy(new BigDecimal("78.80"));
-	        countryEntity.setGnp(new BigDecimal("21000000.00"));
+	        countryEntity.setGnp(new Double("21000000.00"));
 	        countryEntity.setLocalName("United States");
 	        countryEntity.setGovernmentForm("Federal Republic");
 	        countryEntity.setHeadOfState("Joe Biden");
@@ -226,11 +226,11 @@ class CountryServiceImplTest {
 		void testUpdateGnp() {
 		  CountryEntity country1 = new CountryEntity();
 	        country1.setName("Country1");
-	        country1.setGnp(new BigDecimal("1000000.00"));
+	        country1.setGnp(new Double("1000000.00"));
 
 	        CountryEntity country2 = new CountryEntity();
 	        country2.setName("Country2");
-	        country2.setGnp(new BigDecimal("900000.00"));
+	        country2.setGnp(new Double("900000.00"));
 
 	        when(countryRepository.findTop10ByGnp()).thenReturn(Arrays.asList(country1, country2));
 
@@ -242,9 +242,9 @@ class CountryServiceImplTest {
 	        assertEquals(2, result.size());
 
 	        assertEquals("Country1", result.get(0).getName());
-	        assertEquals(new BigDecimal("1000000.00"), result.get(0).getGnp());
+	        assertEquals(new Double("1000000.00"), result.get(0).getGnp());
 	        assertEquals("Country2", result.get(1).getName());
-	        assertEquals(new BigDecimal("900000.00"), result.get(1).getGnp());
+	        assertEquals(new Double("900000.00"), result.get(1).getGnp());
 	    }
 	
 

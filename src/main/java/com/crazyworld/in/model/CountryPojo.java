@@ -66,6 +66,14 @@ public class CountryPojo{
 	    @NotNull
 	    private String code2;
 	    
+	    private String imageUrl;
+	    
+	    private String history;
+	    
+	    private String geography;
+	    
+	    private String traditions;
+	    
 	    @JsonIgnore
 	    private List<CountryLanguagePojo> languages;
 	    
