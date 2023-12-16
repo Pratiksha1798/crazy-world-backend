@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import jakarta.validation.ValidationException;
 @RestController
 @RequestMapping("/api/countries")
 @Validated
+@CrossOrigin("http://localhost:4200")
 public class CountryController {
 	
 	@Autowired
@@ -33,7 +35,7 @@ public class CountryController {
 	@Autowired
 	CountryLanguageServiceImpl countryLanguageService;
 	
-	@GetMapping
+	@GetMapping("/getAllCountries")
 	public ResponseEntity<List<CountryPojo>> getAllCountries(){
 		List<CountryPojo> allCountries=countryServiceImpl.getAllCountries();
 		return new ResponseEntity<>(allCountries, HttpStatus.OK);
@@ -45,7 +47,6 @@ public class CountryController {
 		return countryName;
 		
 	}
-
 
     @GetMapping("/{countrycode}/population")
     public ResponseEntity<String> getPopulationAndLifeExpectancy(@PathVariable String countrycode) {
@@ -59,7 +60,6 @@ public class CountryController {
         List<CountryGnpPojo> top10Countries = countryServiceImpl.getTop10CountriesByGnp();
         return new ResponseEntity<>(top10Countries, HttpStatus.OK);
     }
-    
     
     @PatchMapping("/updategnp/{name}")
     public ResponseEntity<CountryPojo> updateGnp(@PathVariable String name,  @RequestBody @Valid Map<String, Object> updates) {

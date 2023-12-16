@@ -3,7 +3,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.crazyworld.in.util.Continent;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.DecimalMin;
 
@@ -39,10 +39,7 @@ public class CountryPojo{
 
 	    private short indepYear; 
 	    
-	    
-
 	    @NotNull
-
 	    @Digits(integer = 10, fraction = 0, message = "Population must be a positive integer")
 	    private Integer population;
 
@@ -50,11 +47,8 @@ public class CountryPojo{
 
 
 	    @DecimalMin(value = "0.0", message = "GNP must be a non-negative value")
-
-	    
 	    @PositiveOrZero(message = "GNP must be a non-negative value")
-
-	    private BigDecimal gnp;
+	    private double gnp;
 
 	    private BigDecimal gnpOld;
 
@@ -72,9 +66,18 @@ public class CountryPojo{
 	    @NotNull
 	    private String code2;
 	    
+	    private String imageUrl;
+	    
+	    private String history;
+	    
+	    private String geography;
+	    
+	    private String traditions;
+	    
+	    @JsonIgnore
 	    private List<CountryLanguagePojo> languages;
 	    
-
+	    @JsonIgnore
 	    private List<CityPojo> cities;
 
 	

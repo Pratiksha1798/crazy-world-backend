@@ -24,6 +24,7 @@ import jakarta.validation.Valid;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/countrylang")
+@CrossOrigin("http://localhost:4200")
 public class CountryLanguageController {
 
 	@Autowired

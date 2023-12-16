@@ -32,54 +32,67 @@ public class CountryEntity {
 	@Id
 	@Column(name = "code", columnDefinition = "VARCHAR(255)")
 	private String code;
+  
+    @Column(name="cname")
+    private String name;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "continent_type", columnDefinition = "VARCHAR(255)")
+    private Continent continentType;
+    
+    @Column(name="region")
+    private String region;
 
-	@Column(name = "cname")
-	private String name;
+    @Column(name="surface_area")
+    private BigDecimal surfaceArea;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "continent_type", columnDefinition = "VARCHAR(255)")
-	private Continent continentType;
+    @Column(name="indep_year")
+    private short indepYear;
 
-	@Column(name = "region")
-	private String region;
+    @Column(name="population")
+    private Integer population;
+    
+    @Column(name="life_expectancy")
+    private BigDecimal lifeExpectancy;
 
-	@Column(name = "surface_area")
-	private BigDecimal surfaceArea;
+    @Column(name="gnp")
+    private double gnp;
+    
+    @Column(name="gnp_old")
+    private BigDecimal gnpOld;
 
-	@Column(name = "indep_year")
-	private short indepYear;
+    @Column(name="local_name")
+    private String localName;
+    
+    @Column(name="government_form")
+    private String governmentForm;
+    
+    @Column(name="head_of_state")
+    private String headOfState;
 
-	@Column(name = "population")
-	private Integer population;
+    @Column(name="capital")
+    private Integer capital;
 
-	@Column(name = "life_expectancy")
-	private BigDecimal lifeExpectancy;
+    @Column(name="code2")
+    private String code2;
+    
+    @Column(name = "image_url")
+    private String imageUrl;
 
-	@Column(name = "gnp")
-	private BigDecimal gnp;
+    @Column(name = "history", columnDefinition = "TEXT")
+    private String history;
 
-	@Column(name = "gnp_old")
-	private BigDecimal gnpOld;
+    @Column(name = "geography", columnDefinition = "TEXT")
+    private String geography;
 
-	@Column(name = "local_name")
-	private String localName;
-
-	@Column(name = "government_form")
-	private String governmentForm;
-
-	@Column(name = "head_of_state")
-	private String headOfState;
-
-	@Column(name = "capital")
-	private Integer capital;
-
-	@Column(name = "code2")
-	private String code2;
-
-	@OneToMany(mappedBy = "countryEntity", cascade = CascadeType.ALL)
-	private List<CountryLanguageEntity> languages;
-
-	@OneToMany(mappedBy = "countryEntity", cascade = CascadeType.ALL)
-	private List<CityEntity> cities;
+    @Column(name = "traditions", columnDefinition = "TEXT")
+    private String traditions;
+    
+    @OneToMany(mappedBy = "countryEntity", cascade = CascadeType.ALL)
+    private List<CountryLanguageEntity> languages;
+    
+    
+    @OneToMany(mappedBy = "countryEntity", cascade = CascadeType.ALL)
+    private List<CityEntity> cities;
 
 }

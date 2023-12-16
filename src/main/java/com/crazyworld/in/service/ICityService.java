@@ -16,8 +16,8 @@ public interface ICityService {
 
 	List<String> getFirstTenCitiesByStartingCharacter(char startChar);
 
-	List<CityPojo> getCityWithMaxPopulation();
-
+	public CityPojo getCityWithMaxPopulation();
+	
 	List<CityPojo> getTopTenPopulatedCities();
 
 	List<CityPojo> getAllCitiesAndDistrictsForCountry(String countryCode);
