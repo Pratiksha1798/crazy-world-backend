@@ -1,21 +1,16 @@
 package com.crazyworld.in.controller;
 
-
 import java.math.BigDecimal;
-
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,20 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.crazyworld.in.model.CountryLanguagePojo;
 import com.crazyworld.in.service.CountryLanguageServiceImpl;
 
-import com.crazyworld.in.util.IsOfficial;
-import com.crazyworld.in.util.MaxSpokenInEachCountryResoponse;
-
 import jakarta.validation.Valid;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/countrylang")
 public class CountryLanguageController {
 
-
 	@Autowired
 	private CountryLanguageServiceImpl countryLanguageService;
-
-	
 
 	@GetMapping
 	public ResponseEntity<List<CountryLanguagePojo>> getAllUniqueLanguages() {
@@ -60,7 +50,7 @@ public class CountryLanguageController {
 		return countryLanguageService.getAllOfficialCountryLanguages();
 	}
 
-	@GetMapping("unofficial/{countrycode}")
+	@GetMapping("/unofficial/{countrycode}")
 	public ResponseEntity<List<CountryLanguagePojo>> getUnofficialCountryLanguagesByCode(
 			@PathVariable("countrycode") String countrycode) {
 
@@ -94,6 +84,5 @@ public class CountryLanguageController {
 		countryLanguageService.setOfficialStatus(ctycode, lang);
 		return new ResponseEntity<>("Updated isOffical", HttpStatus.OK);
 	}
-
 
 }
