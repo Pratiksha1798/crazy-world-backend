@@ -8,26 +8,21 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.crazyworld.in.dao.CountryLanguageRepository;
+
 import com.crazyworld.in.dao.entity.CountryEntity;
 import com.crazyworld.in.dao.entity.CountryLanguageEntity;
-import com.crazyworld.in.exception.CountryNotFoundException;
+
 import com.crazyworld.in.exception.DataNotFoundException;
 import com.crazyworld.in.exception.LanguageNotFoundException;
 import com.crazyworld.in.model.CountryLanguagePojo;
-import com.crazyworld.in.model.CountryPojo;
+
 import com.crazyworld.in.util.IsOfficial;
 
-
-
 @Service
-public class CountryLanguageServiceImpl implements ICountryLanguageService{
-	
+public class CountryLanguageServiceImpl implements ICountryLanguageService {
+
 	@Autowired
 	CountryLanguageRepository countryLanguageRepository;
-	
-	@Autowired
-	ICountryService countryService;
-
 
 	@Override
 	public List<CountryLanguagePojo> getAllCountryLanguages() {
@@ -45,16 +40,15 @@ public class CountryLanguageServiceImpl implements ICountryLanguageService{
 		}
 		return listOfPojo;
 	}
-	
-	
 
 	@Override
 	public List<CountryLanguagePojo> getCountryLanguagesByCode(String code) {
 
-		CountryPojo countryPojo = countryService.getCountryByCode(code);
-		System.out.println("country: " + countryPojo);
-		CountryEntity countryEntity = new CountryEntity();
-		BeanUtils.copyProperties(countryPojo, countryEntity);
+		CountryEntity countryEntity = countryLanguageRepository.FindCountryByCode(code).get(0);
+
+		if (countryEntity == null)
+			throw new DataNotFoundException("Country not found for code " + code);
+
 		List<CountryLanguagePojo> listOfPojo = new ArrayList<>();
 		List<CountryLanguageEntity> listOfLanguages = countryLanguageRepository.findByCountryEntity(countryEntity);
 		if (listOfLanguages.isEmpty()) {
@@ -84,7 +78,6 @@ public class CountryLanguageServiceImpl implements ICountryLanguageService{
 				languagesCopy.setCountryEntity(languagesCopy.getCountryEntity());
 				pojoLanguage.setIsOfficial(languagesCopy.getIsOfficialType());
 				listOfPojo.add(pojoLanguage);
-				System.out.println(listOfPojo.size());
 			}
 		}
 		return listOfPojo;
@@ -93,14 +86,15 @@ public class CountryLanguageServiceImpl implements ICountryLanguageService{
 	@Override
 	public List<CountryLanguagePojo> getUnofficialCountryLanguagesByCode(String countrycode) {
 
-		CountryPojo countryPojo = countryService.getCountryByCode(countrycode);
-		CountryEntity countryEntity = new CountryEntity();
-		BeanUtils.copyProperties(countryPojo, countryEntity);
-		
+		CountryEntity countryEntity = countryLanguageRepository.FindCountryByCode(countrycode).get(0);
+
+		if (countryEntity == null)
+			throw new DataNotFoundException("Country not found for code " + countrycode);
+
 		List<CountryLanguagePojo> listOfPojo = new ArrayList<>();
 		List<CountryLanguageEntity> listOfLanguages = countryLanguageRepository.getUnOfficialCountries(countryEntity);
 		if (listOfLanguages.isEmpty()) {
-			throw new DataNotFoundException("unofficial languages are not available for this code " + countrycode);
+			throw new LanguageNotFoundException("unofficial languages are not available for this code " + countrycode);
 		}
 		for (CountryLanguageEntity languagesCopy : listOfLanguages) {
 			CountryLanguagePojo pojoLanguage = new CountryLanguagePojo();
@@ -117,10 +111,9 @@ public class CountryLanguageServiceImpl implements ICountryLanguageService{
 		List<CountryLanguageEntity> listOfLanguages = countryLanguageRepository
 				.findMaxSpokenLanguageEntitiesInEachCountry();
 		if (listOfLanguages.isEmpty()) {
-			throw new LanguageNotFoundException("languages are not available");
+			throw new LanguageNotFoundException("Languages are not available");
 		}
 		for (CountryLanguageEntity languagesCopy : listOfLanguages) {
-			CountryLanguagePojo countryLanguagePojo = new CountryLanguagePojo();
 			CountryLanguagePojo pojoLanguage = new CountryLanguagePojo();
 			BeanUtils.copyProperties(languagesCopy, pojoLanguage);
 			pojoLanguage.setIsOfficial(languagesCopy.getIsOfficialType());
@@ -133,13 +126,10 @@ public class CountryLanguageServiceImpl implements ICountryLanguageService{
 	@Override
 	public CountryLanguagePojo getMaxSpokenLanguageByCode(String code) {
 
-		CountryPojo countryPojo = countryService.getCountryByCode(code);
+		CountryEntity countryEntity = countryLanguageRepository.FindCountryByCode(code).get(0);
 
-		if (countryPojo == null) {
-			throw new CountryNotFoundException("Country whith code " + code + " not found");
-		}
-		CountryEntity countryEntity = new CountryEntity();
-		BeanUtils.copyProperties(countryPojo, countryEntity);
+		if (countryEntity == null)
+			throw new DataNotFoundException("Country not found for code " + code);
 
 		CountryLanguageEntity countryLanguageEntity = countryLanguageRepository
 				.findMaxSpokenLanguageEntities(countryEntity).get(0);
@@ -155,29 +145,25 @@ public class CountryLanguageServiceImpl implements ICountryLanguageService{
 	@Override
 	public void updatePercentage(String code, String lang, BigDecimal percentage) {
 
-		CountryPojo countryPojo = countryService.getCountryByCode(code);
-		if (countryPojo == null) {
-			throw new CountryNotFoundException("Country whith code " + code + " not found");
-		}
-		CountryEntity countryEntity = new CountryEntity();
-		BeanUtils.copyProperties(countryPojo, countryEntity);
+		CountryEntity countryEntity = countryLanguageRepository.FindCountryByCode(code).get(0);
+
+		if (countryEntity == null)
+			throw new DataNotFoundException("Country not found for code " + code);
 
 		Optional<CountryLanguageEntity> optional = countryLanguageRepository.findById(lang);
 		if (optional.isPresent()) {
 			countryLanguageRepository.updateLanguageEntity(lang, percentage);
 		} else
-			throw new DataNotFoundException(lang + " not found.");
+			throw new LanguageNotFoundException(lang + " not found.");
 
 	}
 
 	@Override
 	public void setOfficialStatus(String code, String lang) {
-		CountryPojo countryPojo = countryService.getCountryByCode(code);
-		if (countryPojo == null) {
-			throw new CountryNotFoundException("Country with code " + code + " not found");
-		}
-		CountryEntity countryEntity = new CountryEntity();
-		BeanUtils.copyProperties(countryPojo, countryEntity);
+		CountryEntity countryEntity = countryLanguageRepository.FindCountryByCode(code).get(0);
+
+		if (countryEntity == null)
+			throw new DataNotFoundException("Country not found for code " + code);
 
 		if (!countryLanguageRepository.existsByLanguage(lang)) {
 			throw new LanguageNotFoundException(lang + " not found.");

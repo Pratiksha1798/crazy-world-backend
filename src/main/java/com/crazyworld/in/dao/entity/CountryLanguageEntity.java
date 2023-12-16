@@ -22,26 +22,21 @@ import lombok.Setter;
 @Getter
 
 @Entity
-@Table(name="Country_language")
+@Table(name = "Country_language")
 public class CountryLanguageEntity {
-	
-    @Id
-    @Column(name="language")
-    private String language;
 
-    
-    @Enumerated(EnumType.STRING)
-//  @Column(name="is_official_type")
-    private  IsOfficial isOfficialType;
-    
-    
-    @Column(name="percentage")
-    private BigDecimal percentage;
-    
-    @ManyToOne
-    @JoinColumn(name="countryCode")
-    private CountryEntity countryEntity;
+	@Id
+	@Column(name = "language")
+	private String language;
 
+	@Enumerated(EnumType.STRING)
+	private IsOfficial isOfficialType;
 
+	@Column(name = "percentage")
+	private BigDecimal percentage;
+
+	@ManyToOne
+	@JoinColumn(name = "countryCode")
+	private CountryEntity countryEntity;
 
 }

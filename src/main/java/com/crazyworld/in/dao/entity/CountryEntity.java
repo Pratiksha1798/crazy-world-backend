@@ -26,13 +26,13 @@ import lombok.Setter;
 @Getter
 
 @Entity
-@Table(name="country")
+@Table(name = "country")
 public class CountryEntity {
-	
+
 	@Id
 	@Column(name = "code", columnDefinition = "VARCHAR(255)")
 	private String code;
-
+  
     @Column(name="cname")
     private String name;
     
@@ -94,9 +94,5 @@ public class CountryEntity {
     
     @OneToMany(mappedBy = "countryEntity", cascade = CascadeType.ALL)
     private List<CityEntity> cities;
-    
-
-   
-	
 
 }
