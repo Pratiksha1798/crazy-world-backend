@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import org.springframework.beans.BeanUtils;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import com.crazyworld.in.dao.CountryLanguageRepository;
 
@@ -48,17 +49,20 @@ class CountryLanguageServiceImplTest {
 	CountryLanguageServiceImpl countryLanguageImpl;
 
 	CountryEntity[] countryEntitiesArr = {
+			 new CountryEntity("PHL", "Philippines", Continent.ASIA, "Southeast Asia", new BigDecimal(300000.00),
+			            (short) 1946, 109581078, new BigDecimal(71.20), 149743.00, new BigDecimal(103219.00),
+			            "Pilipinas", "Republic", "Rodrigo Duterte", 766, "PH", "",
+			            "Rich cultural history", "Archipelagic country with diverse landscapes", "Cultural festivals and celebrations",
+			            null, null),
 
-			new CountryEntity("PHL", "Philippines", Continent.ASIA, "Southeast Asia", new BigDecimal(300000.00),
-					(short) 1946, 109581078, new BigDecimal(71.20), new BigDecimal(149743.00),
-					new BigDecimal(103219.00), "Pilipinas", "Republic", "Rodrigo Duterte", 766, "PH", null, null),
+			    new CountryEntity("ARG", "Argentina", Continent.SOUTH_AMERICA, "South America", new BigDecimal(2780400.00),
+			            (short) 1816, 45195777, new BigDecimal(76.70), 3402385.00, new BigDecimal(3233105.00),
+			            "Argentina", "Federal Republic", "Alberto Fernández", 69, "AR", "",
+			            "Rich history of indigenous cultures", "Diverse geography with mountains and plains",
+			            "Cultural traditions influenced by European and indigenous roots", null, null),
+			};
 
-			new CountryEntity("ARG", "Argentina", Continent.SOUTH_AMERICA, "South America", new BigDecimal(2780400.00),
-					(short) 1816, 45195777, new BigDecimal(76.70), new BigDecimal(3402385.00),
-					new BigDecimal(3233105.00), "Argentina", "Federal Republic", "Alberto Fernández", 69, "AR", null,
-					null),
-
-	};
+	
 
 	CountryLanguageEntity[] entities = new CountryLanguageEntity[] {
 			new CountryLanguageEntity("ARG-Spanish", IsOfficial.F, new BigDecimal(80.0), countryEntitiesArr[0]),
