@@ -34,6 +34,13 @@ public class CityController {
             return cityService.getAllCities();
         }
       	
+     	@GetMapping("/{name}/citycount")
+	    public ResponseEntity<String> getCityCountByCountryName(@PathVariable String name) {
+	        long cityCount = countryServiceImpl.getCityCountByCountryName(name);
+	        String response = "Total count of cities in " + name + ": " + cityCount;
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    }
+      	
     	@GetMapping("/{name}/cities")
         public ResponseEntity<List<CityPojo>> getCitiesByCountryName(@PathVariable String name) {
             List<CityPojo> cities = countryServiceImpl.getCitiesByCountryName(name);

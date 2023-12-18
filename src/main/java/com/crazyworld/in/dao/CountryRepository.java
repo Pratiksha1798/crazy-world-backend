@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import com.crazyworld.in.dao.entity.CityEntity;
 import com.crazyworld.in.dao.entity.CountryEntity;
 
 @Repository
@@ -47,8 +48,10 @@ public interface CountryRepository extends JpaRepository<CountryEntity,String> {
 	 
 	 @Query("SELECT c.name, COUNT(l.language) FROM CountryEntity c JOIN c.languages l GROUP BY c.name")
 	    List<Object[]> findCountriesWithLanguageCount();
-	 
-	
+	    @Query("SELECT c FROM CityEntity c " +
+	            "JOIN c.countryEntity co " +
+	            "WHERE co.name = :countryName AND c.id = co.capital")
+	     CityEntity findCapitalCityByCountryName(@Param("countryName") String countryName);
 
 
 }		
