@@ -57,6 +57,13 @@ class CountryServiceImplTest {
 
 	    @Mock
 	    CountryRepository countryRepository;
+		 
+		 @Mock
+		 private CityRepository cityRepository;
+		  
+
+		 @InjectMocks
+		 private CityServiceImpl cityService;
 
 	    @InjectMocks
 	    CountryServiceImpl countryService;
@@ -177,45 +184,59 @@ class CountryServiceImplTest {
 	void testGetTop10PopulatedCountries() {
 		
         List<CountryEntity> top10CountriesData = Arrays.asList(
-            new CountryEntity("USA", "United States", Continent.NORTH_AMERICA, "North America",
-                    new BigDecimal("98335100"), (short) 1776, 331449281, new BigDecimal("78.8"),
-                    new BigDecimal("19500000"), new BigDecimal("18624400"), "United States", "Federal Republic",
-                    "Joe Biden", 1, "US", null, null),
-            new CountryEntity("PHL", "Philippines", Continent.ASIA, "Southeast Asia", new BigDecimal(300000.00),
-					(short) 1946, 109581078, new BigDecimal(71.20), new BigDecimal(149743.00),
-					new BigDecimal(103219.00), "Pilipinas", "Republic", "Rodrigo Duterte", 766, "PH", null, null),
-            new CountryEntity("ARG", "Argentina", Continent.SOUTH_AMERICA, "South America", new BigDecimal(2780400.00),
-					(short) 1816, 45195777, new BigDecimal(76.70), new BigDecimal(3402385.00),
-					new BigDecimal(3233105.00), "Argentina", "Federal Republic", "Alberto Fernández", 69, "AR", null,
-					null),
-            new CountryEntity("DEU", "Germany", Continent.EUROPE, "Central Europe", new BigDecimal(357022.00),
-            	    (short) 1871, 83132799, new BigDecimal(81.40), new BigDecimal(4128282.00),
-            	    new BigDecimal(3802359.00), "Federal Republic of Germany", "Federal Republic", "Olaf Scholz", 49, "DE", null, null),
+        		 new CountryEntity("PHL", "United States", Continent.ASIA, "Southeast Asia", new BigDecimal(300000.00),
+ 			            (short) 1946, 109581078, new BigDecimal(71.20), 149743.00, new BigDecimal(103219.00),
+ 			            "Pilipinas", "Republic", "Rodrigo Duterte", 766, "PH", "",
+ 			            "Rich cultural history", "Archipelagic country with diverse landscapes", "Cultural festivals and celebrations",
+ 			            null, null),
 
+ 			    new CountryEntity("ARG", "Argentina", Continent.SOUTH_AMERICA, "South America", new BigDecimal(2780400.00),
+ 			            (short) 1816, 45195777, new BigDecimal(76.70), 3402385.00, new BigDecimal(3233105.00),
+ 			            "Argentina", "Federal Republic", "Alberto Fernández", 69, "AR", "",
+ 			            "Rich history of indigenous cultures", "Diverse geography with mountains and plains",
+ 			            "Cultural traditions influenced by European and indigenous roots", null, null),
+ 			    
+ 			   new CountryEntity("ARG", "Argentina", Continent.SOUTH_AMERICA, "South America", new BigDecimal(2780400.00),
+ 					    (short) 1816, 45195777, new BigDecimal(76.70), 3402385.00, new BigDecimal(3233105.00),
+ 					    "Argentina", "Federal Republic", "Alberto Fernández", 69, "AR", null,
+ 					    null, null, null, null, null),
 
-            new	CountryEntity("CHN", "China", Continent.ASIA, "East Asia", new BigDecimal(9596961.00),
-            	    (short) 1949, 1444216107, new BigDecimal(76.90), new BigDecimal(14166692.00),
-            	    new BigDecimal(14693430.00), "People's Republic of China", "Socialist Republic", "Xi Jinping", 86, "CN", null, null),
+ 					new CountryEntity("DEU", "Germany", Continent.EUROPE, "Central Europe", new BigDecimal(357022.00),
+ 					    (short) 1871, 83132799, new BigDecimal(81.40), 4128282.00, new BigDecimal(3802359.00),
+ 					    "Federal Republic of Germany", "Federal Republic", "Olaf Scholz", 49, "DE", null, null,
+ 					    null, null, null, null),
 
-            new	CountryEntity("IND", "India", Continent.ASIA, "South Asia", new BigDecimal(3287263.00),
-            	    (short) 1947, 1393409038, new BigDecimal(69.70), new BigDecimal(2043415.00),
-            	    new BigDecimal(2039078.00), "Republic of India", "Federal Republic", "Narendra Modi", 91, "IN", null, null),
+ 					new CountryEntity("CHN", "China", Continent.ASIA, "East Asia", new BigDecimal(9596961.00),
+ 					    (short) 1949, 1444216107, new BigDecimal(76.90), 14166692.00, new BigDecimal(14693430.00),
+ 					    "People's Republic of China", "Socialist Republic", "Xi Jinping", 86, "CN", null, null,
+ 					    null, null, null, null),
 
-            new	CountryEntity("BRA", "Brazil", Continent.SOUTH_AMERICA, "South America", new BigDecimal(8515767.00),
-            	    (short) 1822, 213993437, new BigDecimal(75.70), new BigDecimal(3180210.00),
-            	    new BigDecimal(3146414.00), "Federative Republic of Brazil", "Federal Republic", "Jair Bolsonaro", 55, "BR", null, null),
+ 					new CountryEntity("IND", "India", Continent.ASIA, "South Asia", new BigDecimal(3287263.00),
+ 					    (short) 1947, 1393409038, new BigDecimal(69.70), 2043415.00, new BigDecimal(2039078.00),
+ 					    "Republic of India", "Federal Republic", "Narendra Modi", 91, "IN", null, null,
+ 					    null, null, null, null),
 
-            new	CountryEntity("RUS", "Russia", Continent.EUROPE, "Eastern Europe", new BigDecimal(17098242.00),
-            	    (short) 1991, 145912025, new BigDecimal(72.60), new BigDecimal(4166098.00),
-            	    new BigDecimal(4601600.00), "Russian Federation", "Federal Republic", "Vladimir Putin", 7, "RU", null, null),
+ 					new CountryEntity("BRA", "Brazil", Continent.SOUTH_AMERICA, "South America", new BigDecimal(8515767.00),
+ 					    (short) 1822, 213993437, new BigDecimal(75.70), 3180210.00, new BigDecimal(3146414.00),
+ 					    "Federative Republic of Brazil", "Federal Republic", "Jair Bolsonaro", 55, "BR", null, null,
+ 					    null, null, null, null),
 
-            new	CountryEntity("NGA", "Nigeria", Continent.AFRICA, "West Africa", new BigDecimal(923768.00),
-            	    (short) 1960, 211400708, new BigDecimal(54.30), new BigDecimal(514005.00),
-            	    new BigDecimal(468052.00), "Federal Republic of Nigeria", "Federal Republic", "Muhammadu Buhari", 234, "NG", null, null),
+ 					new CountryEntity("RUS", "Russia", Continent.EUROPE, "Eastern Europe", new BigDecimal(17098242.00),
+ 					    (short) 1991, 145912025, new BigDecimal(72.60), 4166098.00, new BigDecimal(4601600.00),
+ 					    "Russian Federation", "Federal Republic", "Vladimir Putin", 7, "RU", null, null,
+ 					    null, null, null, null),
 
-            new	CountryEntity("FRA", "France", Continent.EUROPE, "Western Europe", new BigDecimal(551695.00),
-            	    (short) 843, 65273511, new BigDecimal(82.70), new BigDecimal(2962582.00),
-            	    new BigDecimal(2789450.00), "French Republic", "Semi-Presidential Republic", "Emmanuel Macron", 33, "FR", null, null)
+ 					new CountryEntity("NGA", "Nigeria", Continent.AFRICA, "West Africa", new BigDecimal(923768.00),
+ 					    (short) 1960, 211400708, new BigDecimal(54.30), 514005.00, new BigDecimal(468052.00),
+ 					    "Federal Republic of Nigeria", "Federal Republic", "Muhammadu Buhari", 234, "NG", null, null,
+ 					    null, null, null, null),
+
+ 					new CountryEntity("FRA", "France", Continent.EUROPE, "Western Europe", new BigDecimal(551695.00),
+ 					    (short) 843, 65273511, new BigDecimal(82.70), 2962582.00, new BigDecimal(2789450.00),
+ 					    "French Republic", "Semi-Presidential Republic", "Emmanuel Macron", 33, "FR", null, null,
+ 					    null, null, null, null)
+
+ 				
 
             
         );
@@ -230,7 +251,7 @@ class CountryServiceImplTest {
         assertNotNull(result);
         assertEquals(10, result.size());
         assertEquals("United States", result.get(0).getName());
-        assertEquals(331449281, result.get(0).getPopulation());
+        assertEquals(109581078, result.get(0).getPopulation());
        
 
         verify(countryRepository, times(1)).findTop10PopulatedCountries();
@@ -280,22 +301,11 @@ class CountryServiceImplTest {
         assertEquals("Country2", result.get(1)[0]);
         assertEquals(3, result.get(1)[1]);
     }
-	}
+	
 
 
 	
-	 @Mock
-	 private CountryRepository countryRepository;
-
-	 @InjectMocks
-	 private CountryServiceImpl countryService;
-	 
-	 @Mock
-	 private CityRepository cityRepository;
-	  
-
-	 @InjectMocks
-	 private CityServiceImpl cityService;
+	
 
 	@Test
 	void testGetAllCountries() {

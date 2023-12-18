@@ -90,13 +90,12 @@
         <scope>provided</scope>
     </dependency>
 
-		<dependency>
-    <groupId>jakarta.validation</groupId>
-    <artifactId>jakarta.validation-api</artifactId>
-    <version>3.0.0</version> <!-- Use the latest version -->
-</dependency>
+	<dependency>
+	    <groupId>jakarta.validation</groupId>
+	    <artifactId>jakarta.validation-api</artifactId>
+	    <version>3.0.0</version> 
+	</dependency>
 
-		<dependency>
  		<dependency>
 		    <groupId>org.springdoc</groupId>
 		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
