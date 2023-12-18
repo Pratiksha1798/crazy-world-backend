@@ -14,5 +14,5 @@ import lombok.Setter;
 public class CountryGnpPojo {
 
 	private String name;
-    private BigDecimal gnp;
+    private double gnp;
 }

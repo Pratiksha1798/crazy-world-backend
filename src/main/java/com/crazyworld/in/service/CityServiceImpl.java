@@ -30,16 +30,9 @@ public class CityServiceImpl implements ICityService {
 		for (CityEntity cityEntity : allCity) {
 			CityPojo cityPojo = new CityPojo();
 			BeanUtils.copyProperties(cityEntity, cityPojo);
-			// Additional mappings or operations if needed
 			cityPojos.add(cityPojo);
 		}
 		return cityPojos;
-	}
-
-	@Override
-	public CityPojo getByCityName(String name) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -49,15 +42,12 @@ public class CityServiceImpl implements ICityService {
 	}
 
 	@Override
-	public List<CityPojo> getCityWithMaxPopulation() {
+	public CityPojo getCityWithMaxPopulation() {
 		CityEntity cityEntity = cityRepository.findCityWithMaxPopulation();
-		List<CityPojo> cities = new ArrayList<>();
+		CityPojo cities = new CityPojo();
 
 		if (cityEntity != null) {
-			cities.add(convertToCityPojo(cityEntity));
-			CityPojo cityPojo = new CityPojo();
-			BeanUtils.copyProperties(cityEntity, cityPojo);
-			cities.add(cityPojo);
+			BeanUtils.copyProperties(cityEntity, cities);
 		}
 
 		return cities;
@@ -88,10 +78,13 @@ public class CityServiceImpl implements ICityService {
 		List<CityEntity> cityEntities = cityRepository.getCitiesAndDistrictsfromCountryCode(countryCode);
 		List<CityPojo> citiesAndDistricts = new ArrayList<>();
 
-		for (CityEntity cityEntity : cityEntities) {          //it
+		for (CityEntity cityEntity : cityEntities) {          
 			citiesAndDistricts.add(convertToCityPojo(cityEntity));
 			CityPojo cityPojo = new CityPojo();
+			cityPojo.setName(cityEntity.getName());
+			cityPojo.setDistrict(cityEntity.getDistrict());
 			BeanUtils.copyProperties(cityEntity, cityPojo);
+			citiesAndDistricts.add(cityPojo);
 		}
 
 		return citiesAndDistricts;
@@ -105,7 +98,6 @@ public class CityServiceImpl implements ICityService {
 		for (String district : uniqueDistricts) {
 			CityPojo cityPojo = new CityPojo();
 			cityPojo.setDistrict(district);
-			// If other fields are required in CityPojo, you can set them as well
 			districtPojoList.add(cityPojo);
 		}
 
@@ -114,13 +106,10 @@ public class CityServiceImpl implements ICityService {
 
 	public List<CityPojo> getAveragePopulationByDistrict(String districtName) {
 		Integer avgPopulation = cityRepository.findAveragePopulationByDistrict(districtName);
-
 		if (avgPopulation != null) {
 			CityPojo cityPojo = new CityPojo();
 			cityPojo.setDistrict(districtName);
 			cityPojo.setPopulation(avgPopulation);
-			// Set other properties as needed
-
 			return Collections.singletonList(cityPojo);
 		} else {
 			return Collections.emptyList();
@@ -131,7 +120,6 @@ public class CityServiceImpl implements ICityService {
 	public List<CityPojo> updatePopulationForCity(String cityName, int newPopulation) {
 		List<CityPojo> updatedCities = new ArrayList<>();
 		List<CityEntity> cityEntities = cityRepository.findAllByName(cityName);
-
 		for (CityEntity cityEntity : cityEntities) {
 			cityEntity.setPopulation(newPopulation);
 			cityRepository.save(cityEntity);

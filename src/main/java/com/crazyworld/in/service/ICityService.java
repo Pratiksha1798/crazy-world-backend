@@ -12,12 +12,10 @@ import com.crazyworld.in.model.CityPojo;
 public interface ICityService {
 	List<CityPojo> getAllCities();
 
-	CityPojo getByCityName(String name);
-
 	List<String> getFirstTenCitiesByStartingCharacter(char startChar);
 
-	List<CityPojo> getCityWithMaxPopulation();
-
+	public CityPojo getCityWithMaxPopulation();
+	
 	List<CityPojo> getTopTenPopulatedCities();
 
 	List<CityPojo> getAllCitiesAndDistrictsForCountry(String countryCode);

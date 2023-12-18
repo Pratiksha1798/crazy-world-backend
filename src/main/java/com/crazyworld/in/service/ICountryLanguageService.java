@@ -8,23 +8,21 @@ import com.crazyworld.in.util.IsOfficial;
 import com.crazyworld.in.util.MaxSpokenInEachCountryResoponse;
 
 public interface ICountryLanguageService {
-		
+
 	List<CountryLanguagePojo> getAllCountryLanguages();
 
-    List<CountryLanguagePojo> getCountryLanguagesByCode(String code);
+	List<CountryLanguagePojo> getCountryLanguagesByCode(String code);
 
-    List<CountryLanguagePojo> getAllOfficialCountryLanguages();
+	List<CountryLanguagePojo> getAllOfficialCountryLanguages();
 
-    List<CountryLanguagePojo> getUnofficialCountryLanguagesByCode(String code);
+	List<CountryLanguagePojo> getUnofficialCountryLanguagesByCode(String code);
 
-    List<CountryLanguagePojo> getMaxSpokenLanguage();
+	List<CountryLanguagePojo> getMaxSpokenLanguage();
 
-    public CountryLanguagePojo getMaxSpokenLanguageByCode(String code);
+	public CountryLanguagePojo getMaxSpokenLanguageByCode(String code);
 
-    void updatePercentage(String code, String lang, BigDecimal percentage);
+	void updatePercentage(String code, String lang, BigDecimal percentage);
 
-    public void setOfficialStatus(String code, String lang);
+	public void setOfficialStatus(String code, String lang);
 
 }
-
-

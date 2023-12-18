@@ -19,8 +19,6 @@ public class CityPojo {
     @NotNull
     private String name;
     
-
-
     private String district;
     
     @NotNull

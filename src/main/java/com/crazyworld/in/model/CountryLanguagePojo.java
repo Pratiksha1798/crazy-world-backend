@@ -24,7 +24,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CountryLanguagePojo {
 
-
 	@NotBlank(message = "Language cannot be blank")
 	private String language;
 
@@ -33,10 +32,10 @@ public class CountryLanguagePojo {
 	private IsOfficial isOfficial;
 
 	@NotNull(message = "Percentage cannot be null")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Percentage must be greater than 0")
-    private BigDecimal percentage;
-    
-    @JsonIgnore
-    private CountryPojo countryPojo;
+	@DecimalMin(value = "0.0", inclusive = false, message = "Percentage must be greater than 0")
+	private BigDecimal percentage;
+
+	@JsonIgnore
+	private CountryPojo countryPojo;
 
 }
