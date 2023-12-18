@@ -2,6 +2,7 @@ package com.crazyworld.in.service;
 
 import com.crazyworld.in.dao.CityRepository;
 import com.crazyworld.in.dao.entity.CityEntity;
+import com.crazyworld.in.exception.CityNotFoundException;
 import com.crazyworld.in.model.CityPojo;
 import com.crazyworld.in.model.CountryPojo;
 
@@ -48,6 +49,8 @@ public class CityServiceImpl implements ICityService {
 
 		if (cityEntity != null) {
 			BeanUtils.copyProperties(cityEntity, cities);
+		} else {
+			throw new CityNotFoundException("city not found");
 		}
 
 		return cities;
@@ -76,9 +79,13 @@ public class CityServiceImpl implements ICityService {
 	@Override
 	public List<CityPojo> getAllCitiesAndDistrictsForCountry(String countryCode) {
 		List<CityEntity> cityEntities = cityRepository.getCitiesAndDistrictsfromCountryCode(countryCode);
+		if (cityEntities.isEmpty()) {
+			throw new CityNotFoundException("city not found with country code " + countryCode);
+
+		}
 		List<CityPojo> citiesAndDistricts = new ArrayList<>();
 
-		for (CityEntity cityEntity : cityEntities) {          
+		for (CityEntity cityEntity : cityEntities) {
 			citiesAndDistricts.add(convertToCityPojo(cityEntity));
 			CityPojo cityPojo = new CityPojo();
 			cityPojo.setName(cityEntity.getName());
@@ -120,6 +127,9 @@ public class CityServiceImpl implements ICityService {
 	public List<CityPojo> updatePopulationForCity(String cityName, int newPopulation) {
 		List<CityPojo> updatedCities = new ArrayList<>();
 		List<CityEntity> cityEntities = cityRepository.findAllByName(cityName);
+		if (cityEntities.isEmpty()) {
+			throw new CityNotFoundException("City not found with name " + cityName);
+		}
 		for (CityEntity cityEntity : cityEntities) {
 			cityEntity.setPopulation(newPopulation);
 			cityRepository.save(cityEntity);
@@ -147,6 +157,8 @@ public class CityServiceImpl implements ICityService {
 				BeanUtils.copyProperties(updatedEntity, updatedCity);
 				updatedCities.add(updatedCity);
 			}
+		} else {
+			throw new CityNotFoundException("City not found with name " + cityName + " to update the population");
 		}
 		return updatedCities;
 	}
