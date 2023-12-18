@@ -21,7 +21,7 @@ import com.crazyworld.in.service.CountryLanguageServiceImpl;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/api/countrylang")
 @CrossOrigin("http://localhost:4200")

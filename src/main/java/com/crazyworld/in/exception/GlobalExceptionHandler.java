@@ -52,4 +52,8 @@ public class GlobalExceptionHandler {
 		response.put("errors", errors);
 		return new ResponseEntity<>(response,new HttpHeaders(),HttpStatus.BAD_REQUEST);
 	}
+	@ExceptionHandler({CityNotFoundException.class})
+	public ResponseEntity<Object> cityNotFoundException(CityNotFoundException cf){
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(cf.getMessage());
+	}
 }
