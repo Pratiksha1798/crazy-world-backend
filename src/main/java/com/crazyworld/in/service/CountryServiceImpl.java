@@ -19,6 +19,7 @@ import com.crazyworld.in.dao.CountryRepository.PopulationAndLifeExpectancy;
 import com.crazyworld.in.dao.entity.CityEntity;
 import com.crazyworld.in.dao.entity.CountryEntity;
 import com.crazyworld.in.dao.entity.CountryLanguageEntity;
+import com.crazyworld.in.exception.CityNotFoundException;
 import com.crazyworld.in.exception.CountryNotFoundException;
 import com.crazyworld.in.exception.GovernmentNotFoundException;
 import com.crazyworld.in.exception.LanguageNotFoundException;
@@ -366,8 +367,29 @@ public class CountryServiceImpl implements ICountryService{
 		return countryRepository.findCountriesWithLanguageCount();
 	}
 
+	@Override
+	public CityPojo getCapitalCity(String countryName) {
 
-}
+		
+		   CityEntity city = countryRepository.findCapitalCityByCountryName(countryName);
+	        if (city != null) {
+	        	CityPojo res = new CityPojo();
+	        	BeanUtils.copyProperties(city, res);
+	        	
+	            return res;
+	        }
+	        return null; 
+	    }
+	
+	
+	
+	
+	
+	 
+	}
+
+
+
 
 	
 

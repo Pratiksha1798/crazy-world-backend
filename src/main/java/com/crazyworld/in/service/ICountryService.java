@@ -48,5 +48,7 @@ public interface ICountryService {
 	public CountryPojo updateHeadOfState(String name, Map<String, Object> updates) ;
 	
 	public List<Object[]> getCountriesWithLanguageCount();
+	
+	public CityPojo getCapitalCity(String countryName);
 
 }

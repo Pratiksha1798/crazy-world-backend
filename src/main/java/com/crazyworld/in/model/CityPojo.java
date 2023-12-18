@@ -1,11 +1,12 @@
 package com.crazyworld.in.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Setter
 @Getter
@@ -25,6 +26,7 @@ public class CityPojo {
     @NotNull
     private int population;
 
+    @JsonIgnore
     private CountryPojo country;  
 
     

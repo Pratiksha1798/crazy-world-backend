@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.crazyworld.in.exception.CountryNotFoundException;
+import com.crazyworld.in.model.CityPojo;
 import com.crazyworld.in.model.CountryGnpPojo;
+import com.crazyworld.in.model.CountryLanguagePojo;
 import com.crazyworld.in.model.CountryPojo;
 import com.crazyworld.in.model.CountryWithCityCountDto;
 import com.crazyworld.in.service.CountryLanguageServiceImpl;
@@ -116,8 +118,14 @@ public class CountryController {
     	List<CountryPojo> response = countryServiceImpl.getTop10PopulatedCountries();
         System.out.println(response);
         return new ResponseEntity<>(response, HttpStatus.OK);
-    
     }
+    @GetMapping("/{name}/capital")
+     public ResponseEntity<CityPojo> getCapitalCity(@PathVariable("name") String countryName) {
+            CityPojo capitalCity = countryServiceImpl.getCapitalCity(countryName);
+            return ResponseEntity.ok(capitalCity);
+        }
+    
+    
     
     
     @PatchMapping("/updateheadofstate/{name}")
