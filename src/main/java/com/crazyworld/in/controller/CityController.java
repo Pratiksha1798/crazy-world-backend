@@ -49,7 +49,7 @@ public class CityController {
         public ResponseEntity<CityPojo> getCityWithMaxPopulation() {
             CityPojo cityWithMaxPopulation = cityService.getCityWithMaxPopulation();
                 return ResponseEntity.ok(cityWithMaxPopulation);
-            } 
+            }
         
         
         
