@@ -12,8 +12,6 @@ import com.crazyworld.in.model.CityPojo;
 public interface ICityService {
 	List<CityPojo> getAllCities();
 
-	CityPojo getByCityName(String name);
-
 	List<String> getFirstTenCitiesByStartingCharacter(char startChar);
 
 	public CityPojo getCityWithMaxPopulation();

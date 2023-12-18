@@ -30,16 +30,9 @@ public class CityServiceImpl implements ICityService {
 		for (CityEntity cityEntity : allCity) {
 			CityPojo cityPojo = new CityPojo();
 			BeanUtils.copyProperties(cityEntity, cityPojo);
-			// Additional mappings or operations if needed
 			cityPojos.add(cityPojo);
 		}
 		return cityPojos;
-	}
-
-	@Override
-	public CityPojo getByCityName(String name) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
